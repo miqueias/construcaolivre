@@ -49,13 +49,13 @@ $app->post('/cadastro', function(Request $request, Response $response, $args) {
 
 	$sql = "SELECT * 
 			FROM usuario 
-			WHERE cpf = '".$cpf."'";
+			WHERE email = '".trim($email)."'";
 
 	$stmt = getConn()->query($sql);
 	$result = $stmt->fetchAll(PDO::FETCH_OBJ);
 
 	if (count($result) > 0) {
-		$res = array('status' => 500, 'message' => 'CPF já cadastrado!');
+		$res = array('status' => 500, 'message' => 'E-mail já cadastrado!');
 		return $response->withJson($res, $res[status]);
 		die;
 	}
@@ -240,8 +240,8 @@ function login($cpf, $senha) {
 			AND cidades.flg_estado = estados.desc_estado
 			AND usuario.ativo = 'S'
 			AND item.ativo = 'S' 
-			AND usuario.cpf = '".$cpf."' 
-			AND usuario.senha = '".$senha."' 
+			AND usuario.email = '".trim($email)."' 
+			AND usuario.senha = '".trim($senha)."' 
 			ORDER BY item.id_item DESC";
 
 	$stmt = getConn()->query($sql);
